@@ -1,16 +1,16 @@
-
-## 
-# execute all the analysis steps
+# execute the 5 analysis steps and create a tidy data set text file
 process <- function(){
     data_set <- merge_train_test()
-    data_set <- subset_data(data_set)
-    data_set <- add_activity_names(data_set)
-    tidy_data <- create_tidy_data_set(data_set)
+    data_set1 <- subset_data(data_set)
+    data_set2 <- add_activity_names(data_set1)
+    data_set3 <- proper_variables_names(data_set2)
+    tidy_data <- create_tidy_data_set(data_set3)
+    # create a text file
+    write.table(x = tidy_data, file ="tidy_data_set.txt", row.names=FALSE)
+    tidy_data
 }
 
-
-
-## 1 Merges the 3 training and the 3 test sets to create one data set.
+# 1 Merges the 3 training and the 3 test sets to create one data set.
 
 merge_train_test <-function(){
 
@@ -28,44 +28,58 @@ merge_by_columns <- function(subject_file, activity_file, x_file){
     cbind(data_subject, data_y, data_x)
 } 
 
-
-## 2 Extracts only the measurements on the mean and standard deviation for each measurement. 
-## 4 Appropriately labels the data set with descriptive variable names. 
+# 2 Extracts only the measurements on the mean and standard deviation for each measurement. . 
 
 subset_data <- function(data){
-# read the raw variables names
-features <- read.table(file ="features.txt")
+    # read the raw variables names
+    features <- read.table(file ="features.txt")
 
-# add variable names of column 1 and column 2
-add_labels <- data.frame(label=c("subject", "activity"))
-features_labels <- data.frame(features[,2])
-colnames(features_labels) = "label"
-variables_names <- rbind(add_labels, features_labels)
+    # add to the feature list variable names for column 1 and column 2
+    add_labels <- data.frame(label=c("subject", "activity"))
+    features_labels <- data.frame(features[,2])
+    colnames(features_labels) = "label"
+    variables_names <- rbind(add_labels, features_labels)
 
-# subset of the data set
-# looking for variables names to keep
-flag <- grep(pattern="-mean\\(\\)|-std\\(\\)|^subject$|^activity$",x = variables_names[,1])
-# subset
-data <- data[,flag]
-# add variables names
-colnames(data) = all_labels[flag,1]
-
-data
-}
-
-## 3 Uses descriptive activity names to name the activities in the data set
-add_activity_names <- function(data){
+    # subset of the data set
+    # looking for variables names to keep
+    flag <- grep(pattern="-mean\\(\\)|-std\\(\\)|^subject$|^activity$",x = variables_names[,1])
+    # subsetting
+    data <- data[,flag]
+    # add raw variables names
+    colnames(data) = all_labels[flag,1]
     data
 }
- 
+
+# 3 Uses descriptive activity names to name the activities in the data set
+
+add_activity_names <- function(data){
+    activity_labels <-read.table("activity_labels.txt", header=FALSE)
+    #replace the activity number by an activity label for all elements
+    data[,2] <-unlist(lapply(data[,2],FUN = convert, activity_labels))
+    data
+}
+#replace the activity number by an activity label for one element
+convert <- function(x, activity_labels){
+    if (x %in% c(1:6))  x <- activity_labels[x,2]
+}
+
+## 4 Appropriately labels the data set with descriptive variable names.
+
+proper_variables_names <- function(data){
+    # variable names with only lower case
+    names(data) = tolower(names(data))
+    # delete parenthesis from variables names
+    names(data)=sub("\\(","",(names(data)))
+    names(data)=sub("\\)","",(names(data)))
+    data
+}
+
 ## 5 From the data set in step 4, creates a second, 
 ## independent tidy data set with the average of each variable for each activity and each subject.
+
 create_tidy_data_set <- function(data){
-    test <- melt(data,id=c("subject","activity"),measure.vars=c("tBodyAcc-mean()-X","tBodyAcc-mean()-Y"))
-    test <- melt(tidy_data,id=c("subject","activity"))
-    dcast(data, subject+activity~variable)
-    final <-dcast(test,subject+activity~variable,mean)
-    
-    data
-    
+    # obtain long format data of 4 columns ("subject","activity", "variable", "value")
+    temp <- melt(data, id=c("subject","activity"))
+    # calculate the mean for each variable for each group of (subject+activity)
+    dcast(temp, subject + activity ~ variable, mean)
 }

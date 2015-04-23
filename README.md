@@ -1,8 +1,8 @@
-# getting_cleaning_data_project
-assignement project from getting and cleaning data , data science coursera
+## getting_cleaning_data_project
+Project of "getting and cleaning data course" from data science coursera
 
 
-## Context
+### Context
 
 The goal of this project is to obtain a tidy data set from raw data sets include in this following file 
  "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip".
@@ -27,9 +27,9 @@ The tidy output data set of this project is a merge of the test data set and the
 
 A R script, file "run_analysis.R", is used to process the raw data and output the tidy data set.
 
-A codeBook, file "CodeBook.md", described the raw data sets and the tidy data set
+A codeBook, file "CodeBook.md", described the raw data sets used and the tidy data set generated.
 
-## Inputs  files used :
+### Inputs  files used :
 * Training data set :
     *'train/X_train.txt': Training set.                  7352 records of 561 features
     *'train/y_train.txt': Training labels.               7352 records of activity label
@@ -43,9 +43,11 @@ A codeBook, file "CodeBook.md", described the raw data sets and the tidy data se
     * 'test/subject_test.txt': Subject identification 2947 records of subject
         Each row identifies the subject who performed the activity for each window sample. Its range is from 1 to 30.
 
-* 'features.txt': List of all features
+* General for training and test data set
+    * 'features.txt': List of all features
+    * 'activity_labels.txt' Links the class labels with their activity name
 
-## How to generate the tidy data set ?
+### How to generate the tidy data set ?
 * 1 Copy in your workspace all the input files :
     * 'X_train.txt'
     * 'y_train.txt'
@@ -53,20 +55,13 @@ A codeBook, file "CodeBook.md", described the raw data sets and the tidy data se
     * 'X_test.txt'
     * 'y_test.txt'
     * 'subject_test.txt'
+    * 'features.txt'
+    * 'activity_labels.txt'
+    
 * 2 Copy the script "run_analysis.R" in your workspace
-* 3 run the script : source("run_analisys.R")
+* 3    * load  the script : source("run_analisys.R")
+       * run the function : tidy_data <- process()
 
 ==> A dataframe is generated and named "tidydataset".
     A text dataset is generated and named "tidydataset.txt"
     
-    Note : The data set obtained at the end of step 4 of the script is named "merge_data" is not deleted and is also available.
-
-
-     
-## About the run_analysis.R script 
-
-
-
-
-
-
