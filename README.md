@@ -48,7 +48,9 @@ A codeBook, file "CodeBook.md", described the raw data sets used and the tidy da
     * 'activity_labels.txt' Links the class labels with their activity name
 
 ### How to generate the tidy data set ?
-* 1 Copy in your workspace all the input files :
+* Install the package Reshape2
+
+* Copy in your workspace all the input files :
     * 'X_train.txt'
     * 'y_train.txt'
     * 'subject_train.txt'
@@ -58,10 +60,10 @@ A codeBook, file "CodeBook.md", described the raw data sets used and the tidy da
     * 'features.txt'
     * 'activity_labels.txt'
     
-* 2 Copy the script "run_analysis.R" in your workspace
-* 3    * load  the script : source("run_analisys.R")
-       * run the function : tidy_data <- process()
+* Copy script "run_analysis.R" in your workspace
+* Load library Reshape2 : library(reshape2)
+* Load  the script : source("run_analisys.R")
+* Run the function : tidy_data <- process()
 
-==> A dataframe is generated and named "tidydataset".
-    A text dataset is generated and named "tidydataset.txt"
-    
+==> A dataframe is generated and named "tidy_data".
+    A text dataset is generated and named "tidy_data_set.txt"

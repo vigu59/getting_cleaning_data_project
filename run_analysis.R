@@ -46,7 +46,7 @@ subset_data <- function(data){
     # subsetting
     data <- data[,flag]
     # add raw variables names
-    colnames(data) = all_labels[flag,1]
+    colnames(data) = variables_names[flag,1]
     data
 }
 
